@@ -77,6 +77,18 @@ else
 	echo "${bold}${green}=====Skipping network config setup=====${reset}"
 fi
 
+# Audio
+echo "${bold}${green}=====Starting Audio Setup=====${reset}"
+
+if pacman -Q jack2 &>/dev/null; then
+    sudo pacman -Rns --noconfirm jack2
+fi
+pkg pavucontrol pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber
+
+systemctl --user enable --now pipewire.service
+systemctl --user enable --now pipewire-pulse.service
+systemctl --user enable --now wireplumber.service
+
 # Login
 if ! systemctl list-unit-files | grep -q '^sddm.service'; then
 	pkg sddm
@@ -113,19 +125,6 @@ pkg zen-browser-bin
 
 # Desktop Utils
 pkg timeshift wl-clipboard wl-clip-persist brightnessctl playerctl 
-
-# Audio
-echo "${bold}${green}=====Starting Audio Setup=====${reset}"
-
-if pacman -Q jack2 &>/dev/null; then
-    sudo pacman -Rns --noconfirm jack2
-fi
-pkg pavucontrol pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber
-
-systemctl --user enable --now pipewire.service
-systemctl --user enable --now pipewire-pulse.service
-systemctl --user enable --now wireplumber.service
-
 
 # Fonts
 pkg ttf-jetbrains-mono-nerd ttf-hack-nerd ttf-font-awesome ttf-cascadia-mono-nerd noto-fonts 
