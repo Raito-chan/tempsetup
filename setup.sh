@@ -153,7 +153,8 @@ else
 fi
 
 if [ ! -d "$HOME/.dotfiles" ]; then
-	git clone https://github.com/Raito-chan/.dotfiles.git $HOME
+	mkdir $HOME/.dotfiles
+	git clone https://github.com/Raito-chan/.dotfiles.git $HOME/.dotfiles
 	rcup -f
 else
 	echo "${bold}${green}=====Skipping dotfiles setup=====${reset}"
