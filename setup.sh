@@ -134,7 +134,7 @@ pkg loupe vlc
 
 
 # Build packages from aur using yay
-aur thorium-browser-avx2-bin
+aur thorium-browser-bin
 
 # Setup git ssh keys (bad idea, would not recommend)
 if [ ! -f "$HOME/.ssh/raito-gh" ]; then
