@@ -90,7 +90,7 @@ EOF
 # Hyprland
 if ! command -v hyprland &>/dev/null; then
 	pkg hyprland hyprshot hyprlock hypridle hyprpaper waybar mako wlogout \
-		hyprpolkitagent xdg-desktop-portal-hyprland xdg-desktop-portal-wlr xdg-desktop-portal-gtk hyprland-qtutils
+		hyprpolkitagent xdg-desktop-portal-hyprland xdg-desktop-portal-wlr xdg-desktop-portal-gtk hyprland-guiutils
 	aur walker-bin
 else
 	echo "${bold}${green}=====Skipping hyprland setup=====${reset}"
