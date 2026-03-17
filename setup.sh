@@ -41,15 +41,17 @@ if [[ "$(uname -m)" == "x86_64" ]] && ! command -v yay &>/dev/null; then
 fi
 
 # Networking
-if ! command -v nmcli &>/dev/null; then
+if ! command -v firewalld &>/dev/null; then
+	echo "${bold}${orange}=====Beginning Network Setup=====${reset}"
 	pkg networkmanager network-manager-applet firewalld
-	sudo systemctl enable --now NetworkManager.service
-	sudo systemctl enable --now firewalld.service
+	echo "${bold}${green}=====Core Network Apps Installed=====${reset}"
 else
-	echo "${bold}${green}=====Skipping network setup=====${reset}"
+	echo "${bold}${green}=====Skipping Core Network Apps=====${reset}"
 fi
 if [ ! -f "/etc/NetworkManager/conf.d/priority.conf" ]; then
-  
+  	echo "${bold}${orange}=====Configuring Network=====${reset}"
+	sudo systemctl enable --now NetworkManager.service
+	sudo systemctl enable --now firewalld.service
 	CONFIG_DIR="/etc/NetworkManager/conf.d"
 	CONFIG_FILE="$CONFIG_DIR/priority.conf"
 
@@ -70,6 +72,7 @@ connection.autoconnect-priority=0
 ipv4.route-metric=20
 ipv6.route-metric=20
 EOF
+echo "${bold}${green}=====Network Configuration Complete=====${reset}"
 else
 	echo "${bold}${green}=====Skipping network config setup=====${reset}"
 fi
@@ -97,7 +100,7 @@ else
 fi
 
 # Terminal
-if ! command -v hyprland &>/dev/null; then
+if ! command -v ghostty &>/dev/null; then
 	pkg oh-my-posh fzf zoxide fd lsd yazi ripgrep bat btop fastfetch tldr less nvim tmux \
 	zip unzip ghostty neovim
 	aur tmux-plugin-manager zinit rcm
@@ -112,6 +115,11 @@ pkg zen-browser-bin
 pkg timeshift wl-clipboard wl-clip-persist brightnessctl playerctl 
 
 # Audio
+echo "${bold}${green}=====Starting Audio Setup=====${reset}"
+
+if pacman -Q jack2 &>/dev/null; then
+    sudo pacman -Rns --noconfirm jack2
+fi
 pkg pavucontrol pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber
 
 systemctl --user enable --now pipewire.service
